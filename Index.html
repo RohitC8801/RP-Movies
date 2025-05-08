@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Video Streaming & Download Template</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .controls {
+      max-width: 800px;
+      margin: 20px auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    input, select {
+      padding: 10px;
+      font-size: 1em;
+      flex: 1;
+      min-width: 150px;
+    }
+    .video-list {
+      max-width: 1000px;
+      margin: 30px auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .card h3 {
+      margin: 0 0 10px;
+    }
+    .card video {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+    .card p {
+      margin: 5px 0;
+      font-size: 0.9em;
+      color: #555;
+    }
+    .card a {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 12px;
+      background-color: #28a745;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    .card a:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <h1>Video Streaming & Download</h1>
+
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="Search videos..." />
+    <select id="categoryFilter">
+      <option value="">All Categories</option>
+      <option value="movie">Movie</option>
+      <option value="web-series">Web Series</option>
+      <option value="cartoon">Cartoon</option>
+    </select>
+    <select id="languageFilter">
+      <option value="">All Languages</option>
+      <option value="hindi">Hindi</option>
+      <option value="english">English</option>
+      <option value="hollywood">Hollywood</option>
+      <option value="bollywood">Bollywood</option>
+      <option value="tollywood">Tollywood</option>
+    </select>
+  </div>
+
+  <div class="video-list" id="videoList"></div>
+
+  <script>
+    const videos = [
+      {
+        title: "Avengers Endgame",
+        category: "movie",
+        language: "hollywood",
+        url: "https://www.w3schools.com/html/mov_bbb.mp4"
+      },
+      {
+        title: "3 Idiots",
+        category: "movie",
+        language: "bollywood",
+        url: "https://www.w3schools.com/html/movie.mp4"
+      },
+      {
+        title: "Chhota Bheem",
+        category: "cartoon",
+        language: "hindi",
+        url: "https://www.w3schools.com/html/mov_bbb.mp4"
+      },
+      {
+        title: "Stranger Things",
+        category: "web-series",
+        language: "english",
+        url: "https://www.w3schools.com/html/movie.mp4"
+      }
+    ];
+
+    const searchInput = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const languageFilter = document.getElementById('languageFilter');
+    const videoList = document.getElementById('videoList');
+
+    function renderVideos() {
+      const query = searchInput.value.toLowerCase();
+      const category = categoryFilter.value;
+      const language = languageFilter.value;
+
+      const filtered = videos.filter(video => {
+        return (
+          video.title.toLowerCase().includes(query) &&
+          (category === "" || video.category === category) &&
+          (language === "" || video.language === language)
+        );
+      });
+
+      videoList.innerHTML = filtered.map(video => `
+        <div class="card">
+          <h3>${video.title}</h3>
+          <p>Category: ${video.category}</p>
+          <p>Language: ${video.language}</p>
+          <video controls src="${video.url}"></video>
+          <a href="${video.url}" download>Download</a>
+        </div>
+      `).join('');
+    }
+
+    searchInput.addEventListener("input", renderVideos);
+    categoryFilter.addEventListener("change", renderVideos);
+    languageFilter.addEventListener("change", renderVideos);
+
+    renderVideos(); // initial render
+  </script>
+</body>
+</html>
